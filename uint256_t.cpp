@@ -5,8 +5,8 @@ const uint256_t uint256_0(0);
 const uint256_t uint256_1(1);
 
 uint256_t::uint256_t(){
-    UPPER = 0;
-    LOWER = 0;
+    UPPER = uint128_0;
+    LOWER = uint128_0;
 }
 
 uint256_t::uint256_t(const uint256_t & rhs){
@@ -97,7 +97,7 @@ uint256_t uint256_t::operator<<(const uint256_t & rhs) const{
         return uint256_t((UPPER << shift) + (LOWER >> (uint128_128 - shift)), LOWER << shift);
     }
     else if ((uint128_256 > shift) && (shift > uint128_128)){
-        return uint256_t(LOWER << (shift - 128), 0);
+        return uint256_t(LOWER << (shift - 128), uint128_0);
     }
     else{
         return uint256_0;

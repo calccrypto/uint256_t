@@ -48,7 +48,7 @@ class uint256_t{
         uint256_t(const uint256_t & rhs);
 
         template <typename T> uint256_t(const T & rhs){
-            UPPER = 0;
+            UPPER = uint128_0;
             LOWER = rhs;
         }
 
@@ -63,7 +63,7 @@ class uint256_t{
         uint256_t operator=(const uint256_t & rhs);
 
         template <typename T> uint256_t operator=(const T & rhs){
-            UPPER = 0;
+            UPPER = uint128_0;
             LOWER = rhs;
             return *this;
         }
@@ -99,7 +99,7 @@ class uint256_t{
         }
 
         template <typename T> uint256_t operator&=(const T & rhs){
-            UPPER = 0;
+            UPPER = uint128_0;
             LOWER &= rhs;
             return *this;
         }
