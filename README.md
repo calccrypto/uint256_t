@@ -1,4 +1,5 @@
-﻿uint256_t
+﻿[![Build Status](https://travis-ci.org/calccrypto/uint256_t.svg?branch=master)](https://travis-ci.org/calccrypto/uint256_t)
+uint256_t
 An unsigned 256 bit integer type for C++
 Copyright (c) 2014 Jason Lee @ calccrypto at gmail.com
 
