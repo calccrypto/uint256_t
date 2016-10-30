@@ -1,7 +1,7 @@
 /*
 uint256_t.h
 An unsigned 256 bit integer library for C++
-Copyright (c) 2014 Jason Lee @ calccrypto at gmail.com
+Copyright (c) 2014, 2016 Jason Lee @ calccrypto at gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -31,12 +31,9 @@ to do a general rewrite of this class.
 #define __UINT256_T__
 
 #include <iostream>
-#include <stdexcept>
-#include <stdint.h>
+#include <utility>
 
 #include "uint128_t.h"
-
-extern const uint128_t uint128_256;
 
 class uint256_t{
     private:
@@ -46,21 +43,21 @@ class uint256_t{
         // Constructors
         uint256_t();
         uint256_t(const uint256_t & rhs);
+        uint256_t(const uint256_t && rhs);
 
-        template <typename T> uint256_t(const T & rhs){
-            UPPER = uint128_0;
-            LOWER = rhs;
-        }
+        template <typename T> uint256_t(const T & rhs)
+            : UPPER(uint128_0), LOWER(rhs)
+        {}
 
-        template <typename S, typename T> uint256_t(const S & upper_rhs, const T & lower_rhs){
-            UPPER = upper_rhs;
-            LOWER = lower_rhs;
-        }
+        template <typename S, typename T> uint256_t(const S & upper_rhs, const T & lower_rhs)
+            : UPPER(upper_rhs), LOWER(lower_rhs)
+        {}
 
         //  RHS input args only
 
         // Assignment Operator
         uint256_t operator=(const uint256_t & rhs);
+        uint256_t operator=(const uint256_t && rhs);
 
         template <typename T> uint256_t operator=(const T & rhs){
             UPPER = uint128_0;
@@ -69,13 +66,13 @@ class uint256_t{
         }
 
         // Typecast Operators
-        operator bool() const;
-        operator char() const;
-        operator uint8_t() const;
-        operator uint16_t() const;
-        operator uint32_t() const;
-        operator uint64_t() const;
-        operator uint128_t() const;
+        operator bool () const;
+        operator char () const;
+        operator uint8_t () const;
+        operator uint16_t () const;
+        operator uint32_t () const;
+        operator uint64_t () const;
+        operator uint128_t () const;
 
         // Bitwise Operators
         uint256_t operator&(const uint256_t & rhs) const;
@@ -255,8 +252,8 @@ class uint256_t{
         uint256_t operator--(int);
 
         // Get private values
-        uint128_t upper() const;
-        uint128_t lower() const;
+        const uint128_t & upper() const;
+        const uint128_t & lower() const;
 
         // Get bitsize of value
         uint16_t bits() const;

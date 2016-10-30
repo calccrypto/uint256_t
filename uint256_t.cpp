@@ -4,19 +4,29 @@ const uint128_t uint128_256(256);
 const uint256_t uint256_0(0);
 const uint256_t uint256_1(1);
 
-uint256_t::uint256_t(){
-    UPPER = uint128_0;
-    LOWER = uint128_0;
-}
+uint256_t::uint256_t()
+    : UPPER(uint128_0), LOWER(uint128_0)
+{}
 
-uint256_t::uint256_t(const uint256_t & rhs){
-    UPPER = rhs.UPPER;
-    LOWER = rhs.LOWER;
-}
+uint256_t::uint256_t(const uint256_t & rhs)
+    : UPPER(rhs.UPPER), LOWER(rhs.LOWER)
+{}
+
+uint256_t::uint256_t(const uint256_t && rhs)
+    : UPPER(std::move(rhs.UPPER)), LOWER(std::move(rhs.LOWER))
+{}
 
 uint256_t uint256_t::operator=(const uint256_t & rhs){
     UPPER = rhs.UPPER;
     LOWER = rhs.LOWER;
+    return *this;
+}
+
+uint256_t uint256_t::operator=(const uint256_t && rhs){
+    if (this != &rhs){
+        UPPER = std::move(rhs.UPPER);
+        LOWER = std::move(rhs.LOWER);
+    }
     return *this;
 }
 
@@ -208,32 +218,36 @@ uint256_t uint256_t::operator*(const uint256_t & rhs) const{
     uint128_t bottom[4] = {rhs.upper().upper(), rhs.upper().lower(), rhs.lower().upper(), rhs.lower().lower()};
     uint128_t products[4][4];
 
+    // multiply each component of the values
     for(int y = 3; y > -1; y--){
         for(int x = 3; x > -1; x--){
-            products[3 - x][y] = top[x] * bottom[y];
+            products[3 - y][x] = top[x] * bottom[y];
         }
     }
 
-    // initial row
-    uint128_t fourth64 = products[0][3].lower();
-    uint128_t third64 = products[0][2].lower() + (products[0][3].upper());
-    uint128_t second64 = products[0][1].lower() + (products[0][2].upper());
-    uint128_t first64 = products[0][0].lower() + (products[0][1].upper());
+    // first row
+    uint128_t fourth64 = uint128_t(products[0][3].lower());
+    uint128_t third64  = uint128_t(products[0][2].lower()) + uint128_t(products[0][3].upper());
+    uint128_t second64 = uint128_t(products[0][1].lower()) + uint128_t(products[0][2].upper());
+    uint128_t first64  = uint128_t(products[0][0].lower()) + uint128_t(products[0][1].upper());
 
     // second row
-    third64 += products[1][3].lower();
-    second64 += (products[1][2].lower()) + (products[1][3].upper());
-    first64 += (products[1][1].lower()) + (products[1][2].upper());
+    third64  += uint128_t(products[1][3].lower());
+    second64 += uint128_t(products[1][2].lower()) + uint128_t(products[1][3].upper());
+    first64  += uint128_t(products[1][1].lower()) + uint128_t(products[1][2].upper());
 
     // third row
-    second64 += products[2][3].lower();
-    first64 += (products[2][2].lower()) + (products[2][3].upper());
+    second64 += uint128_t(products[2][3].lower());
+    first64  += uint128_t(products[2][2].lower()) + uint128_t(products[2][3].upper());
 
     // fourth row
-    first64 += products[3][3].lower();
+    first64  += uint128_t(products[3][3].lower());
 
     // combines the values, taking care of carry over
-    return uint256_t(first64 << uint128_64, uint128_0) + uint256_t(third64.upper(), third64 << uint128_64) + uint256_t(second64, uint128_0) + uint256_t(fourth64);
+    return uint256_t(first64 << uint128_64, uint128_0) +
+           uint256_t(third64.upper(), third64 << uint128_64) +
+           uint256_t(second64, uint128_0) +
+           uint256_t(fourth64);
 }
 
 uint256_t uint256_t::operator*=(const uint256_t & rhs){
@@ -314,11 +328,11 @@ uint256_t uint256_t::operator--(int){
     return temp;
 }
 
-uint128_t uint256_t::upper() const{
+const uint128_t & uint256_t::upper() const {
     return UPPER;
 }
 
-uint128_t uint256_t::lower() const{
+const uint128_t & uint256_t::lower() const {
     return LOWER;
 }
 
