@@ -31,6 +31,7 @@ to do a general rewrite of this class.
 #define __UINT256_T__
 
 #include <iostream>
+#include <stdexcept>
 #include <utility>
 
 #include "uint128_t.h"
