@@ -33,6 +33,7 @@ to do a general rewrite of this class.
 #include <cstdint>
 #include <iostream>
 #include <stdexcept>
+#include <string>
 #include <utility>
 
 #include "uint128_t.h"
