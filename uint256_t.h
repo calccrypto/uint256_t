@@ -30,6 +30,7 @@ to do a general rewrite of this class.
 #ifndef __UINT256_T__
 #define __UINT256_T__
 
+#include <cstdint>
 #include <iostream>
 #include <stdexcept>
 #include <utility>

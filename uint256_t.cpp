@@ -147,14 +147,14 @@ uint256_t uint256_t::operator>>=(const uint256_t & shift){
 }
 
 bool uint256_t::operator!() const{
-    return !(UPPER | LOWER);
+    return ! (bool) *this;
 }
 
 bool uint256_t::operator&&(const uint256_t & rhs) const{
-    return (*this && rhs);
+    return ((bool) *this && (bool) rhs);
 }
 bool uint256_t::operator||(const uint256_t & rhs) const{
-    return (*this || rhs);
+    return ((bool) *this || (bool) rhs);
 }
 
 bool uint256_t::operator==(const uint256_t & rhs) const{
