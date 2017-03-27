@@ -2,7 +2,7 @@
 
 An unsigned 256 bit integer type for C++
 
-Copyright (c) 2014 Jason Lee @ calccrypto at gmail.com
+Copyright (c) 2013 - 2017 Jason Lee @ calccrypto at gmail.com
 
 Please see LICENSE file for license.
 
@@ -12,7 +12,6 @@ With much help from Auston Sterling
 
 Thanks to François Dessenne for convincing me
 to do a general rewrite of this class.
-
 
 This is simple implementation of an unsigned 256 bit
 integer type in C++. It's meant to be used like a standard
