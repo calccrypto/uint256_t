@@ -52,14 +52,15 @@ class uint128_t{
         template <typename T> uint128_t(const T & rhs)
             : UPPER(0), LOWER(rhs)
         {
-            static_assert(std::is_integral <T>::value, "Constructor type must be an integer.");
+            static_assert(std::is_integral <T>::value, "Input argument type must be an integer.");
         }
 
         template <typename S, typename T> uint128_t(const S & upper_rhs, const T & lower_rhs)
             : UPPER(upper_rhs), LOWER(lower_rhs)
         {
-            static_assert(std::is_integral <S>::value, "Higher digit type must be an integer.");
-            static_assert(std::is_integral <T>::value, "Lower digit type must be an integer.");
+            static_assert(std::is_integral <S>::value &&
+                          std::is_integral <T>::value
+                          , "Input argument types must be integers.");
         }
 
         //  RHS input args only
@@ -69,7 +70,7 @@ class uint128_t{
         uint128_t operator=(uint128_t && rhs);
 
         template <typename T> uint128_t operator=(const T & rhs){
-            static_assert(std::is_integral <T>::value, "Constructor type must be an integer.");
+            static_assert(std::is_integral <T>::value, "Input argument type must be an integer.");
             UPPER = 0;
             LOWER = rhs;
             return *this;
@@ -305,7 +306,7 @@ namespace std {  // This is probably not a good idea
     template <> struct is_unsigned   <uint128_t> : std::true_type {};
 };
 
-// Useful values
+// useful values
 extern const uint128_t uint128_0;
 extern const uint128_t uint128_1;
 
@@ -438,7 +439,7 @@ template <typename T> uint128_t operator%(const T & lhs, const uint128_t & rhs){
 }
 
 template <typename T> T & operator%=(T & lhs, const uint128_t & rhs){
-    return (lhs = static_cast <T> (uint128_t(lhs) % rhs));
+    return lhs = static_cast <T> (uint128_t(lhs) % rhs);
 }
 
 // IO Operator

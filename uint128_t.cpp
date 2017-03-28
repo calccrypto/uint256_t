@@ -1,6 +1,6 @@
 #include "uint128_t.h"
 
-const uint128_t uint128_0((uint64_t) 0);
+const uint128_t uint128_0(0);
 const uint128_t uint128_1(1);
 
 uint128_t::uint128_t()
@@ -14,8 +14,10 @@ uint128_t::uint128_t(const uint128_t & rhs)
 uint128_t::uint128_t(uint128_t && rhs)
     : UPPER(std::move(rhs.UPPER)), LOWER(std::move(rhs.LOWER))
 {
-    rhs.UPPER = 0;
-    rhs.LOWER = 0;
+    if (this != &rhs){
+        rhs.UPPER = 0;
+        rhs.LOWER = 0;
+    }
 }
 
 uint128_t uint128_t::operator=(const uint128_t & rhs){
@@ -25,10 +27,12 @@ uint128_t uint128_t::operator=(const uint128_t & rhs){
 }
 
 uint128_t uint128_t::operator=(uint128_t && rhs){
-    UPPER = std::move(rhs.UPPER);
-    LOWER = std::move(rhs.LOWER);
-    rhs.UPPER = 0;
-    rhs.LOWER = 0;
+    if (this != &rhs){
+        UPPER = std::move(rhs.UPPER);
+        LOWER = std::move(rhs.LOWER);
+        rhs.UPPER = 0;
+        rhs.LOWER = 0;
+    }
     return *this;
 }
 
@@ -360,7 +364,7 @@ uint8_t uint128_t::bits() const{
 
 std::string uint128_t::str(uint8_t base, const unsigned int & len) const{
     if ((base < 2) || (base > 16)){
-        throw std::invalid_argument("Base must be in th range 2-16");
+        throw std::invalid_argument("Base must be in the range [2, 16]");
     }
     std::string out = "";
     if (!(*this)){
