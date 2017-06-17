@@ -37,6 +37,7 @@ to do a general rewrite of this class.
 #include <cstdint>
 #include <iostream>
 #include <stdexcept>
+#include <type_traits>
 #include <utility>
 
 class uint128_t{
@@ -66,10 +67,10 @@ class uint128_t{
         //  RHS input args only
 
         // Assignment Operator
-        uint128_t operator=(const uint128_t & rhs);
-        uint128_t operator=(uint128_t && rhs);
+        uint128_t & operator=(const uint128_t & rhs);
+        uint128_t & operator=(uint128_t && rhs);
 
-        template <typename T> uint128_t operator=(const T & rhs){
+        template <typename T> uint128_t & operator=(const T & rhs){
             static_assert(std::is_integral <T>::value, "Input argument type must be an integer.");
             UPPER = 0;
             LOWER = rhs;
