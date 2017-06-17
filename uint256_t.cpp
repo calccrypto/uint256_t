@@ -23,13 +23,13 @@ uint256_t::uint256_t(uint256_t && rhs)
     }
 }
 
-uint256_t uint256_t::operator=(const uint256_t & rhs){
+uint256_t & uint256_t::operator=(const uint256_t & rhs){
     UPPER = rhs.UPPER;
     LOWER = rhs.LOWER;
     return *this;
 }
 
-uint256_t uint256_t::operator=(uint256_t && rhs){
+uint256_t & uint256_t::operator=(uint256_t && rhs){
     if (this != &rhs){
         UPPER = std::move(rhs.UPPER);
         LOWER = std::move(rhs.LOWER);

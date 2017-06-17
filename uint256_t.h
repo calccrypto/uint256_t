@@ -77,10 +77,10 @@ class uint256_t{
         //  RHS input args only
 
         // Assignment Operator
-        uint256_t operator=(const uint256_t & rhs);
-        uint256_t operator=(uint256_t && rhs);
+        uint256_t & operator=(const uint256_t & rhs);
+        uint256_t & operator=(uint256_t && rhs);
 
-        template <typename T> uint256_t operator=(const T & rhs){
+        template <typename T> uint256_t & operator=(const T & rhs){
             static_assert(std::is_integral <T>::value, "Input argument type must be an integer.");
             UPPER = uint128_0;
             LOWER = rhs;
