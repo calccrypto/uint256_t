@@ -20,6 +20,26 @@ static const std::map <uint32_t, std::string> tests = {
     std::make_pair(14, "170445352"),
     std::make_pair(15, "ce82d6d4"),
     std::make_pair(16, "8415856c"),
+    std::make_pair(17, "56dc4e33"),
+    std::make_pair(18, "3b2db13a"),
+    std::make_pair(19, "291i3b4g"),
+    std::make_pair(20, "1eca0764"),
+    std::make_pair(21, "14hc96jg"),
+    std::make_pair(22, "jblga9e"),
+    std::make_pair(23, "em6i5a5"),
+    std::make_pair(24, "be75374"),
+    std::make_pair(25, "91mo4go"),
+    std::make_pair(26, "74d74li"),
+    std::make_pair(27, "5jblgea"),
+    std::make_pair(28, "4gl7i9g"),
+    std::make_pair(29, "3l13lor"),
+    std::make_pair(30, "315o5e4"),
+    std::make_pair(31, "2fcfub9"),
+    std::make_pair(32, "221b1bc"),
+    std::make_pair(33, "1nkji2p"),
+    std::make_pair(34, "1eq93ik"),
+    std::make_pair(35, "176p6y9"),
+    std::make_pair(36, "10ncmss")
     // std::make_pair(256, "uint256_t"),
 };
 
@@ -34,7 +54,7 @@ TEST(Function, str){
     }
 
     // add leading zeros
-    for(uint32_t base = 2; base <= 16; base++){
+    for(uint32_t base = 2; base <= 36; base++){
         EXPECT_EQ(original.str(base, tests.at(base).size() + leading), std::string(leading, '0') + tests.at(base));
     }
 }
