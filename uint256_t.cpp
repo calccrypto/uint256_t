@@ -187,7 +187,7 @@ uint256_t uint256_t::operator>>(const uint256_t & rhs) const{
 }
 
 uint256_t & uint256_t::operator>>=(const uint128_t & shift){
-    return *this >>= uint128_t(shift);
+    return *this >>= uint256_t(shift);
 }
 
 uint256_t & uint256_t::operator>>=(const uint256_t & shift){
