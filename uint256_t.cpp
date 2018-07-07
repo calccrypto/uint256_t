@@ -487,8 +487,8 @@ uint16_t uint256_t::bits() const{
 }
 
 std::string uint256_t::str(uint8_t base, const unsigned int & len) const{
-    if ((base < 2) || (base > 16)){
-        throw std::invalid_argument("Base must be in the range 2-16");
+    if ((base < 2) || (base > 36)){
+        throw std::invalid_argument("Base must be in the range 2-36");
     }
     std::string out = "";
     if (!(*this)){
@@ -498,7 +498,7 @@ std::string uint256_t::str(uint8_t base, const unsigned int & len) const{
         std::pair <uint256_t, uint256_t> qr(*this, uint256_0);
         do{
             qr = divmod(qr.first, base);
-            out = "0123456789abcdef"[(uint8_t) qr.second] + out;
+            out = "0123456789abcdefghijklmnopqrstuvwxyz"[(uint8_t) qr.second] + out;
         } while (qr.first);
     }
     if (out.size() < len){
