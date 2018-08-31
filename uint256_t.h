@@ -39,6 +39,14 @@ to do a general rewrite of this class.
 
 #include "uint128_t.h"
 
+#if __cplusplus >= 201402L   // C++ 14
+#define ENABLE_IF_Z(T) std::enable_if_t <std::is_integral<T>::value>
+#elif __cplusplus >= 201103L // C++11
+#define ENABLE_IF_Z(T) typename std::enable_if <std::is_integral<T>::value, T>::type
+#else
+#error uint128_t requires at least C++11 to compile
+#endif
+
 class uint256_t;
 
 // Give uint256_t type traits
@@ -58,21 +66,21 @@ class uint256_t{
         uint256_t(const uint256_t & rhs);
         uint256_t(uint256_t && rhs);
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t(const T & rhs)
             : UPPER(uint128_0), LOWER(rhs)
         {}
 
-        template <typename S, typename T, typename = std::enable_if_t <std::is_integral<S>::value && std::is_integral<T>::value> >
+        template <typename S, typename T, typename = ENABLE_IF_Z(S), typename = ENABLE_IF_Z(T)>
         uint256_t(const S & upper_rhs, const T & lower_rhs)
             : UPPER(upper_rhs), LOWER(lower_rhs)
         {}
 
         template <typename R, typename S, typename T, typename U,
-                  typename = std::enable_if_t <std::is_integral<R>::value &&
-                                               std::is_integral<S>::value &&
-                                               std::is_integral<T>::value &&
-                                               std::is_integral<U>::value> >
+                  typename = ENABLE_IF_Z(R),
+                  typename = ENABLE_IF_Z(S),
+                  typename = ENABLE_IF_Z(T),
+                  typename = ENABLE_IF_Z(U)>
         uint256_t(const R & upper_lhs, const S & lower_lhs, const T & upper_rhs, const U & lower_rhs)
             : UPPER(upper_lhs, lower_lhs), LOWER(upper_rhs, lower_rhs)
         {}
@@ -83,7 +91,7 @@ class uint256_t{
         uint256_t & operator=(const uint256_t & rhs);
         uint256_t & operator=(uint256_t && rhs);
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t & operator=(const T & rhs){
             UPPER = uint128_0;
             LOWER = rhs;
@@ -102,7 +110,7 @@ class uint256_t{
         uint256_t operator&(const uint128_t & rhs) const;
         uint256_t operator&(const uint256_t & rhs) const;
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t operator&(const T & rhs) const{
             return uint256_t(uint128_0, LOWER & (uint128_t) rhs);
         }
@@ -110,7 +118,7 @@ class uint256_t{
         uint256_t & operator&=(const uint128_t & rhs);
         uint256_t & operator&=(const uint256_t & rhs);
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t & operator&=(const T & rhs){
             UPPER = uint128_0;
             LOWER &= rhs;
@@ -120,7 +128,7 @@ class uint256_t{
         uint256_t operator|(const uint128_t & rhs) const;
         uint256_t operator|(const uint256_t & rhs) const;
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t operator|(const T & rhs) const{
             return uint256_t(UPPER, LOWER | uint128_t(rhs));
         }
@@ -128,7 +136,7 @@ class uint256_t{
         uint256_t & operator|=(const uint128_t & rhs);
         uint256_t & operator|=(const uint256_t & rhs);
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t & operator|=(const T & rhs){
             LOWER |= (uint128_t) rhs;
             return *this;
@@ -137,7 +145,7 @@ class uint256_t{
         uint256_t operator^(const uint128_t & rhs) const;
         uint256_t operator^(const uint256_t & rhs) const;
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t operator^(const T & rhs) const{
             return uint256_t(UPPER, LOWER ^ (uint128_t) rhs);
         }
@@ -145,7 +153,7 @@ class uint256_t{
         uint256_t & operator^=(const uint128_t & rhs);
         uint256_t & operator^=(const uint256_t & rhs);
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t & operator^=(const T & rhs){
             LOWER ^= (uint128_t) rhs;
             return *this;
@@ -157,7 +165,7 @@ class uint256_t{
         uint256_t operator<<(const uint128_t & shift) const;
         uint256_t operator<<(const uint256_t & shift) const;
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t operator<<(const T & rhs) const{
             return *this << uint256_t(rhs);
         }
@@ -165,7 +173,7 @@ class uint256_t{
         uint256_t & operator<<=(const uint128_t & shift);
         uint256_t & operator<<=(const uint256_t & shift);
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t & operator<<=(const T & rhs){
             *this = *this << uint256_t(rhs);
             return *this;
@@ -174,7 +182,7 @@ class uint256_t{
         uint256_t operator>>(const uint128_t & shift) const;
         uint256_t operator>>(const uint256_t & shift) const;
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t operator>>(const T & rhs) const{
             return *this >> uint256_t(rhs);
         }
@@ -182,7 +190,7 @@ class uint256_t{
         uint256_t & operator>>=(const uint128_t & shift);
         uint256_t & operator>>=(const uint256_t & shift);
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t & operator>>=(const T & rhs){
             *this = *this >> uint256_t(rhs);
             return *this;
@@ -194,7 +202,7 @@ class uint256_t{
         bool operator&&(const uint128_t & rhs) const;
         bool operator&&(const uint256_t & rhs) const;
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         bool operator&&(const T & rhs) const{
             return ((bool) *this && rhs);
         }
@@ -202,7 +210,7 @@ class uint256_t{
         bool operator||(const uint128_t & rhs) const;
         bool operator||(const uint256_t & rhs) const;
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         bool operator||(const T & rhs) const{
             return ((bool) *this || rhs);
         }
@@ -211,7 +219,7 @@ class uint256_t{
         bool operator==(const uint128_t & rhs) const;
         bool operator==(const uint256_t & rhs) const;
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         bool operator==(const T & rhs) const{
             return (!UPPER && (LOWER == uint128_t(rhs)));
         }
@@ -219,7 +227,7 @@ class uint256_t{
         bool operator!=(const uint128_t & rhs) const;
         bool operator!=(const uint256_t & rhs) const;
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         bool operator!=(const T & rhs) const{
             return ((bool) UPPER | (LOWER != uint128_t(rhs)));
         }
@@ -227,7 +235,7 @@ class uint256_t{
         bool operator>(const uint128_t & rhs) const;
         bool operator>(const uint256_t & rhs) const;
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         bool operator>(const T & rhs) const{
             return ((bool) UPPER | (LOWER > uint128_t(rhs)));
         }
@@ -235,7 +243,7 @@ class uint256_t{
         bool operator<(const uint128_t & rhs) const;
         bool operator<(const uint256_t & rhs) const;
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         bool operator<(const T & rhs) const{
             return (!UPPER)?(LOWER < uint128_t(rhs)):false;
         }
@@ -243,7 +251,7 @@ class uint256_t{
         bool operator>=(const uint128_t & rhs) const;
         bool operator>=(const uint256_t & rhs) const;
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         bool operator>=(const T & rhs) const{
             return ((*this > rhs) | (*this == rhs));
         }
@@ -251,7 +259,7 @@ class uint256_t{
         bool operator<=(const uint128_t & rhs) const;
         bool operator<=(const uint256_t & rhs) const;
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         bool operator<=(const T & rhs) const{
             return ((*this < rhs) | (*this == rhs));
         }
@@ -260,7 +268,7 @@ class uint256_t{
         uint256_t operator+(const uint128_t & rhs) const;
         uint256_t operator+(const uint256_t & rhs) const;
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t operator+(const T & rhs) const{
             return uint256_t(UPPER + ((LOWER + (uint128_t) rhs) < LOWER), LOWER + (uint128_t) rhs);
         }
@@ -268,7 +276,7 @@ class uint256_t{
         uint256_t & operator+=(const uint128_t & rhs);
         uint256_t & operator+=(const uint256_t & rhs);
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t & operator+=(const T & rhs){
             UPPER = UPPER + ((LOWER + rhs) < LOWER);
             LOWER = LOWER + rhs;
@@ -278,7 +286,7 @@ class uint256_t{
         uint256_t operator-(const uint128_t & rhs) const;
         uint256_t operator-(const uint256_t & rhs) const;
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t operator-(const T & rhs) const{
             return uint256_t(UPPER - ((LOWER - rhs) > LOWER), LOWER - rhs);
         }
@@ -286,7 +294,7 @@ class uint256_t{
         uint256_t & operator-=(const uint128_t & rhs);
         uint256_t & operator-=(const uint256_t & rhs);
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t & operator-=(const T & rhs){
             *this = *this - rhs;
             return *this;
@@ -295,7 +303,7 @@ class uint256_t{
         uint256_t operator*(const uint128_t & rhs) const;
         uint256_t operator*(const uint256_t & rhs) const;
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t operator*(const T & rhs) const{
             return *this * uint256_t(rhs);
         }
@@ -303,7 +311,7 @@ class uint256_t{
         uint256_t & operator*=(const uint128_t & rhs);
         uint256_t & operator*=(const uint256_t & rhs);
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t & operator*=(const T & rhs){
             *this = *this * uint256_t(rhs);
             return *this;
@@ -316,7 +324,7 @@ class uint256_t{
         uint256_t operator/(const uint128_t & rhs) const;
         uint256_t operator/(const uint256_t & rhs) const;
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t operator/(const T & rhs) const{
             return *this / uint256_t(rhs);
         }
@@ -324,7 +332,7 @@ class uint256_t{
         uint256_t & operator/=(const uint128_t & rhs);
         uint256_t & operator/=(const uint256_t & rhs);
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t & operator/=(const T & rhs){
             *this = *this / uint256_t(rhs);
             return *this;
@@ -333,7 +341,7 @@ class uint256_t{
         uint256_t operator%(const uint128_t & rhs) const;
         uint256_t operator%(const uint256_t & rhs) const;
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t operator%(const T & rhs) const{
             return *this % uint256_t(rhs);
         }
@@ -341,7 +349,7 @@ class uint256_t{
         uint256_t & operator%=(const uint128_t & rhs);
         uint256_t & operator%=(const uint256_t & rhs);
 
-        template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+        template <typename T, typename = ENABLE_IF_Z(T)>
         uint256_t & operator%=(const T & rhs){
             *this = *this % uint256_t(rhs);
             return *this;
@@ -381,42 +389,42 @@ extern const uint256_t uint256_1;
 // Bitwise Operators
 uint256_t operator&(const uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
  uint256_t operator&(const T & lhs, const uint256_t & rhs){
     return rhs & lhs;
 }
 
 uint128_t & operator&=(uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 T & operator&=(T & lhs, const uint256_t & rhs){
     return lhs = static_cast <T> (rhs & lhs);
 }
 
 uint256_t operator|(const uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 uint256_t operator|(const T & lhs, const uint256_t & rhs){
     return rhs | lhs;
 }
 
 uint128_t & operator|=(uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 T & operator|=(T & lhs, const uint256_t & rhs){
     return lhs = static_cast <T> (rhs | lhs);
 }
 
 uint256_t operator^(const uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 uint256_t operator^(const T & lhs, const uint256_t & rhs){
     return rhs ^ lhs;
 }
 
 uint128_t & operator^=(uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 T & operator^=(T & lhs, const uint256_t & rhs){
     return lhs = static_cast <T> (rhs ^ lhs);
 }
@@ -435,7 +443,7 @@ uint256_t operator<<(const int64_t   & lhs, const uint256_t & rhs);
 
 uint128_t & operator<<=(uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 T & operator<<=(T & lhs, const uint256_t & rhs){
     lhs = static_cast <T> (uint256_t(lhs) << rhs);
     return lhs;
@@ -454,7 +462,7 @@ uint256_t operator>>(const int64_t   & lhs, const uint256_t & rhs);
 
 uint128_t & operator>>=(uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 T & operator>>=(T & lhs, const uint256_t & rhs){
     return lhs = static_cast <T> (uint256_t(lhs) >> rhs);
 }
@@ -462,42 +470,42 @@ T & operator>>=(T & lhs, const uint256_t & rhs){
 // Comparison Operators
 bool operator==(const uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 bool operator==(const T & lhs, const uint256_t & rhs){
     return (!rhs.upper() && ((uint64_t) lhs == rhs.lower()));
 }
 
 bool operator!=(const uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 bool operator!=(const T & lhs, const uint256_t & rhs){
     return (rhs.upper() | ((uint64_t) lhs != rhs.lower()));
 }
 
 bool operator>(const uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 bool operator>(const T & lhs, const uint256_t & rhs){
     return rhs.upper()?false:((uint128_t) lhs > rhs.lower());
 }
 
 bool operator<(const uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 bool operator<(const T & lhs, const uint256_t & rhs){
     return rhs.upper()?true:((uint128_t) lhs < rhs.lower());
 }
 
 bool operator>=(const uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 bool operator>=(const T & lhs, const uint256_t & rhs){
     return rhs.upper()?false:((uint128_t) lhs >= rhs.lower());
 }
 
 bool operator<=(const uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 bool operator<=(const T & lhs, const uint256_t & rhs){
     return rhs.upper()?true:((uint128_t) lhs <= rhs.lower());
 }
@@ -505,14 +513,14 @@ bool operator<=(const T & lhs, const uint256_t & rhs){
 // Arithmetic Operators
 uint256_t operator+(const uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 uint256_t operator+(const T & lhs, const uint256_t & rhs){
     return rhs + lhs;
 }
 
 uint128_t & operator+=(uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 T & operator+=(T & lhs, const uint256_t & rhs){
     lhs = static_cast <T> (rhs + lhs);
     return lhs;
@@ -520,56 +528,56 @@ T & operator+=(T & lhs, const uint256_t & rhs){
 
 uint256_t operator-(const uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 uint256_t operator-(const T & lhs, const uint256_t & rhs){
     return -(rhs - lhs);
 }
 
 uint128_t & operator-=(uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 T & operator-=(T & lhs, const uint256_t & rhs){
     return lhs = static_cast <T> (-(rhs - lhs));
 }
 
 uint256_t operator*(const uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 uint256_t operator*(const T & lhs, const uint256_t & rhs){
     return rhs * lhs;
 }
 
 uint128_t & operator*=(uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 T & operator*=(T & lhs, const uint256_t & rhs){
     return lhs = static_cast <T> (rhs * lhs);
 }
 
 uint256_t operator/(const uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 uint256_t operator/(const T & lhs, const uint256_t & rhs){
     return uint256_t(lhs) / rhs;
 }
 
 uint128_t & operator/=(uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 T & operator/=(T & lhs, const uint256_t & rhs){
     return lhs = static_cast <T> (uint256_t(lhs) / rhs);
 }
 
 uint256_t operator%(const uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 uint256_t operator%(const T & lhs, const uint256_t & rhs){
     return uint256_t(lhs) % rhs;
 }
 
 uint128_t & operator%=(uint128_t & lhs, const uint256_t & rhs);
 
-template <typename T, typename = std::enable_if_t <std::is_integral<T>::value> >
+template <typename T, typename = ENABLE_IF_Z(T)>
 T & operator%=(T & lhs, const uint256_t & rhs){
     return lhs = static_cast <T> (uint256_t(lhs) % rhs);
 }
