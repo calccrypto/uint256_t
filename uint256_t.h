@@ -369,11 +369,13 @@ class uint256_t{
         std::string str(uint8_t base = 10, const unsigned int & len = 0) const;
 };
 
+// useful values
 extern const uint128_t uint128_64;
 extern const uint128_t uint128_128;
 extern const uint128_t uint128_256;
 extern const uint256_t uint256_0;
 extern const uint256_t uint256_1;
+extern const uint256_t uint256_max;
 
 // Bitwise Operators
 uint256_t operator&(const uint128_t & lhs, const uint256_t & rhs);

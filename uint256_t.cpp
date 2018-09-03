@@ -5,6 +5,7 @@ const uint128_t uint128_128(128);
 const uint128_t uint128_256(256);
 const uint256_t uint256_0(0);
 const uint256_t uint256_1(1);
+const uint256_t uint256_max(uint128_t((uint64_t) -1, (uint64_t) -1), uint128_t((uint64_t) -1, (uint64_t) -1));
 
 uint256_t::uint256_t()
     : UPPER(uint128_0), LOWER(uint128_0)
