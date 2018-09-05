@@ -61,13 +61,13 @@ class uint256_t{
             : UPPER(uint128_0), LOWER(rhs)
         {}
 
-        template <typename S, typename T, typename = std::enable_if_t <std::is_integral<S>::value && std::is_integral<T>::value> >
+        template <typename S, typename T, typename = typename std::enable_if <std::is_integral<S>::value && std::is_integral<T>::value> >
         uint256_t(const S & upper_rhs, const T & lower_rhs)
             : UPPER(upper_rhs), LOWER(lower_rhs)
         {}
 
         template <typename R, typename S, typename T, typename U,
-                  typename = std::enable_if_t <std::is_integral<R>::value &&
+                  typename = typename std::enable_if <std::is_integral<R>::value &&
                                                std::is_integral<S>::value &&
                                                std::is_integral<T>::value &&
                                                std::is_integral<U>::value> >
