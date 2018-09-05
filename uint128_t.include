@@ -65,7 +65,7 @@ class uint128_t{
             : UPPER(0), LOWER(rhs)
         {}
 
-        template <typename S, typename T, typename = typename std::enable_if <std::is_integral<S>::value, T>::type && std::is_integral<T>::value> >
+        template <typename S, typename T, typename = typename std::enable_if <std::is_integral<S>::value && std::is_integral<T>::value, void>::type>
         uint128_t(const S & upper_rhs, const T & lower_rhs)
             : UPPER(upper_rhs), LOWER(lower_rhs)
         {}
