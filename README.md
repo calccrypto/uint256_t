@@ -15,6 +15,9 @@ With much help from Auston Sterling
 Thanks to François Dessenne for convincing me
 to do a general rewrite of this class.
 
+Thanks to John Skaller for making the symbols
+visible in shared libraries.
+
 This is simple implementation of an unsigned 256 bit
 integer type in C++. It's meant to be used like a standard
 uintX_t, except with a larger bit size than those provided
