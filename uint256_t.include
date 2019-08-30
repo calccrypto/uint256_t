@@ -55,6 +55,7 @@ class uint256_t{
         uint256_t();
         uint256_t(const uint256_t & rhs);
         uint256_t(uint256_t && rhs);
+		uint256_t(const char *val);
 
         template <typename T, typename = typename std::enable_if<std::is_integral<T>::value, T>::type >
         uint256_t(const T & rhs)
@@ -75,6 +76,8 @@ class uint256_t{
         {}
 
         //  RHS input args only
+		std::vector<uint8_t> export_bits() const;
+        std::vector<uint8_t> export_bits_truncate() const;
 
         // Assignment Operator
         uint256_t & operator=(const uint256_t & rhs);
