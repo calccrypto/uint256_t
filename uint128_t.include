@@ -60,8 +60,8 @@ class uint128_t{
         uint128_t();
         uint128_t(const uint128_t & rhs);
         uint128_t(uint128_t && rhs);
-        uint128_t(std::string s);
-        uint128_t(const char *val);
+        uint128_t(std::string & s);
+        uint128_t(const char *s);
 
         template <typename T, typename = typename std::enable_if<std::is_integral<T>::value, T>::type >
         uint128_t(const T & rhs)
@@ -282,6 +282,7 @@ class uint128_t{
 
     private:
         std::pair <uint128_t, uint128_t> divmod(const uint128_t & lhs, const uint128_t & rhs) const;
+        void init(const char * s);
         void ConvertToVector(std::vector<uint8_t> & current, const uint64_t & val) const;
         uint8_t HexToInt(const char *s) const;
         uint64_t ConvertToUint64(const char *s) const;

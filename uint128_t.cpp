@@ -20,11 +20,15 @@ uint128_t::uint128_t(uint128_t && rhs)
     }
 }
 
-uint128_t::uint128_t(std::string s) {
-    uint128_t(s.c_str());
+uint128_t::uint128_t(std::string & s) {
+    init(s.c_str());
 }
 
 uint128_t::uint128_t(const char *s) {
+    init(s);
+}
+
+void uint128_t::init(const char *s) {
     if (s == NULL || s[0] == 0) { uint128_t(); return; }
     if (s[1] == 'x')
         s += 2;

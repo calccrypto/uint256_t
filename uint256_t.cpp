@@ -26,11 +26,15 @@ uint256_t::uint256_t(uint256_t && rhs)
     }
 }
 
-uint256_t::uint256_t(const std::string s){
-    uint256_t(s.c_str());
+uint256_t::uint256_t(const std::string & s) {
+    init(s.c_str());
 }
 
-uint256_t::uint256_t(const char * s){
+uint256_t::uint256_t(const char * s) {
+    init(s);
+}
+
+void uint256_t::init(const char * s) {
     //create from string
     char buffer[64];
     if (s == NULL) { uint256_t(); return; }
@@ -41,8 +45,7 @@ uint256_t::uint256_t(const char * s){
 
     int len = strlen(s);
     int padLength = 0;
-    if (len < 64)
-    {
+    if (len < 64) {
         padLength = 64 - len;
         memset(buffer, '0', padLength);
     }
