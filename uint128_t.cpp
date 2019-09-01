@@ -297,22 +297,20 @@ uint128_t & uint128_t::operator*=(const uint128_t & rhs){
     return *this;
 }
 
-void uint128_t::ConvertToVector(std::vector<uint8_t> & ret, const uint64_t & val) const
-{
-	ret.push_back(static_cast<uint8_t>(val >> 56));
-	ret.push_back(static_cast<uint8_t>(val >> 48));
-	ret.push_back(static_cast<uint8_t>(val >> 40));
-	ret.push_back(static_cast<uint8_t>(val >> 32));
-	ret.push_back(static_cast<uint8_t>(val >> 24));
-	ret.push_back(static_cast<uint8_t>(val >> 16));
-	ret.push_back(static_cast<uint8_t>(val >> 8));
-	ret.push_back(static_cast<uint8_t>(val));
+void uint128_t::ConvertToVector(std::vector<uint8_t> & ret, const uint64_t & val) const {
+    ret.push_back(static_cast<uint8_t>(val >> 56));
+    ret.push_back(static_cast<uint8_t>(val >> 48));
+    ret.push_back(static_cast<uint8_t>(val >> 40));
+    ret.push_back(static_cast<uint8_t>(val >> 32));
+    ret.push_back(static_cast<uint8_t>(val >> 24));
+    ret.push_back(static_cast<uint8_t>(val >> 16));
+    ret.push_back(static_cast<uint8_t>(val >> 8));
+    ret.push_back(static_cast<uint8_t>(val));
 }
 
-void uint128_t::export_bits(std::vector<uint8_t> &ret) const
-{
-	ConvertToVector(ret, const_cast<const uint64_t&>(UPPER));
-	ConvertToVector(ret, const_cast<const uint64_t&>(LOWER));
+void uint128_t::export_bits(std::vector<uint8_t> &ret) const {
+    ConvertToVector(ret, const_cast<const uint64_t&>(UPPER));
+    ConvertToVector(ret, const_cast<const uint64_t&>(LOWER));
 }
 
 std::pair <uint128_t, uint128_t> uint128_t::divmod(const uint128_t & lhs, const uint128_t & rhs) const{
