@@ -24,7 +24,7 @@ when compiling as a shared library.
 This is simple implementation of an unsigned 256 bit
 integer type in C++. It's meant to be used like a standard
 `uintX_t`, except with a larger bit size than those provided
-by C/C++. 
+by C/C++.
 
 `uint256_t` requires [`uint128_t`](https://github.com/calccrypto/uint128_t), which is included.
 
@@ -43,12 +43,7 @@ int main() {
 }
 ```
 
-Be careful when initializing a `uint256_t` value. -1 does not
-create the value 2<sup>256</sup> - 1. Rather, it uses the built-in max unsigned value (probably 2<sup>64</sup> - 1).
-
 ### Compilation
 A C++ compiler supporting at least C++11 is required.
 
 Compilation can be done by directly including `uint128_t.cpp` and `uint256_t.cpp` in your compile command, e.g. `g++ -std=c++11 main.cpp uint128_t.cpp uint256_t.cpp`, or other ways, such as linking the `uint128_t.o` and `uint256_t.o` files, or creating a library, and linking the library in.
-
-

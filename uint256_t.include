@@ -44,7 +44,7 @@ namespace std {  // This is probably not a good idea
     template <> struct is_arithmetic <uint256_t> : std::true_type {};
     template <> struct is_integral   <uint256_t> : std::true_type {};
     template <> struct is_unsigned   <uint256_t> : std::true_type {};
-};
+}
 
 class uint256_t{
     private:
@@ -61,16 +61,21 @@ class uint256_t{
         template <typename T, typename = typename std::enable_if<std::is_integral<T>::value, T>::type >
         uint256_t(const T & rhs)
             : UPPER(uint128_0), LOWER(rhs)
-        {}
+        {
+            if (rhs < 0) {
+                UPPER = -1;
+            }
+        }
 
         template <typename S, typename T, typename = typename std::enable_if <std::is_integral<S>::value && std::is_integral<T>::value, void>::type>
         uint256_t(const S & upper_rhs, const T & lower_rhs)
             : UPPER(upper_rhs), LOWER(lower_rhs)
         {}
+
        template <typename R, typename S, typename T, typename U,
-                typename = typename std::enable_if<std::is_integral<R>::value && 
-                std::is_integral<S>::value && 
-                std::is_integral<T>::value && 
+                typename = typename std::enable_if<std::is_integral<R>::value &&
+                std::is_integral<S>::value &&
+                std::is_integral<T>::value &&
                 std::is_integral<U>::value, void>::type>
         uint256_t(const R & upper_lhs, const S & lower_lhs, const T & upper_rhs, const U & lower_rhs)
             : UPPER(upper_lhs, lower_lhs), LOWER(upper_rhs, lower_rhs)
@@ -271,9 +276,7 @@ class uint256_t{
 
         template <typename T, typename = typename std::enable_if<std::is_integral<T>::value, T>::type >
         uint256_t & operator+=(const T & rhs){
-            UPPER = UPPER + ((LOWER + rhs) < LOWER);
-            LOWER = LOWER + rhs;
-            return *this;
+            return *this += uint256_t(rhs);
         }
 
         uint256_t operator-(const uint128_t & rhs) const;
@@ -289,8 +292,7 @@ class uint256_t{
 
         template <typename T, typename = typename std::enable_if<std::is_integral<T>::value, T>::type >
         uint256_t & operator-=(const T & rhs){
-            *this = *this - rhs;
-            return *this;
+            return *this = *this - uint256_t(rhs);
         }
 
         uint256_t operator*(const uint128_t & rhs) const;
@@ -306,8 +308,7 @@ class uint256_t{
 
         template <typename T, typename = typename std::enable_if<std::is_integral<T>::value, T>::type >
         uint256_t & operator*=(const T & rhs){
-            *this = *this * uint256_t(rhs);
-            return *this;
+            return *this = *this * uint256_t(rhs);
         }
 
     private:
@@ -328,8 +329,7 @@ class uint256_t{
 
         template <typename T, typename = typename std::enable_if<std::is_integral<T>::value, T>::type >
         uint256_t & operator/=(const T & rhs){
-            *this = *this / uint256_t(rhs);
-            return *this;
+            return *this = *this / uint256_t(rhs);
         }
 
         uint256_t operator%(const uint128_t & rhs) const;
@@ -345,8 +345,7 @@ class uint256_t{
 
         template <typename T, typename = typename std::enable_if<std::is_integral<T>::value, T>::type >
         uint256_t & operator%=(const T & rhs){
-            *this = *this % uint256_t(rhs);
-            return *this;
+            return *this = *this % uint256_t(rhs);
         }
 
         // Increment Operators
