@@ -72,6 +72,13 @@ class uint256_t{
             : UPPER(upper_rhs), LOWER(lower_rhs)
         {}
 
+        uint256_t(const uint128_t & upper_rhs, const uint128_t & lower_rhs)
+            : UPPER(upper_rhs), LOWER(lower_rhs)
+        {}
+        uint256_t(const uint128_t & lower_rhs)
+            : UPPER(uint128_0), LOWER(lower_rhs)
+        {}
+
        template <typename R, typename S, typename T, typename U,
                 typename = typename std::enable_if<std::is_integral<R>::value &&
                 std::is_integral<S>::value &&
