@@ -10,15 +10,30 @@ const uint256_t uint256_1(1);
 const uint256_t uint256_max(uint128_t((uint64_t) -1, (uint64_t) -1), uint128_t((uint64_t) -1, (uint64_t) -1));
 
 uint256_t::uint256_t()
+#ifdef __BIG_ENDIAN__
     : UPPER(uint128_0), LOWER(uint128_0)
+#endif
+#ifdef __LITTLE_ENDIAN__
+    : LOWER(uint128_0), UPPER(uint128_0)
+#endif
 {}
 
 uint256_t::uint256_t(const uint256_t & rhs)
+#ifdef __BIG_ENDIAN__
     : UPPER(rhs.UPPER), LOWER(rhs.LOWER)
+#endif
+#ifdef __LITTLE_ENDIAN__
+    : LOWER(rhs.LOWER), UPPER(rhs.UPPER)
+#endif
 {}
 
 uint256_t::uint256_t(uint256_t && rhs)
+#ifdef __BIG_ENDIAN__
     : UPPER(std::move(rhs.UPPER)), LOWER(std::move(rhs.LOWER))
+#endif
+#ifdef __LITTLE_ENDIAN__
+    : LOWER(std::move(rhs.LOWER)), UPPER(std::move(rhs.UPPER))
+#endif
 {
     if (this != &rhs){
         rhs.UPPER = uint128_0;
