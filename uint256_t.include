@@ -57,9 +57,9 @@ class uint256_t{
 
     public:
         // Constructors
-        uint256_t();
-        uint256_t(const uint256_t & rhs);
-        uint256_t(uint256_t && rhs);
+        uint256_t() = default;
+        uint256_t(const uint256_t & rhs) = default;
+        uint256_t(uint256_t && rhs) = default;
         uint256_t(const std::string & s);
         uint256_t(const char *val);
 
@@ -123,8 +123,8 @@ class uint256_t{
         std::vector<uint8_t> export_bits_truncate() const;
 
         // Assignment Operator
-        uint256_t & operator=(const uint256_t & rhs);
-        uint256_t & operator=(uint256_t && rhs);
+        uint256_t & operator=(const uint256_t & rhs) = default;
+        uint256_t & operator=(uint256_t && rhs) = default;
 
         template <typename T, typename = typename std::enable_if <std::is_integral<T>::value, T>::type>
         uint256_t & operator=(const T & rhs){
