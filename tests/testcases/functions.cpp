@@ -59,6 +59,35 @@ TEST(Function, str){
     }
 }
 
+TEST(Function, export_bits){
+    const uint64_t u64 = 0x0123456789abcdefULL;
+    const uint256_t value = u64;
+
+    EXPECT_EQ(value, u64);
+
+    const std::vector<uint8_t> full = {
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef
+    };
+
+    EXPECT_EQ(value.export_bits(), full);
+}
+
+TEST(Function, export_bits_truncated){
+    const uint64_t u64 = 0x0123456789abcdefULL;
+    const uint256_t value = u64;
+
+    EXPECT_EQ(value, u64);
+
+    const std::vector<uint8_t> truncated = {
+        0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef
+    };
+
+    EXPECT_EQ(value.export_bits_truncate(), truncated);
+}
+
 TEST(External, ostream){
     const uint256_t value(0xfedcba9876543210ULL);
 
