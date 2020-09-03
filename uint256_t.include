@@ -72,8 +72,10 @@ class uint256_t{
             : LOWER(rhs), UPPER(uint128_0)
 #endif
         {
-            if (rhs < 0) {
-                UPPER = -1;
+            if (std::is_signed<T>::value) {
+                if (rhs < 0) {
+                    UPPER = uint128_t(-1, -1);
+                }
             }
         }
 
@@ -129,6 +131,13 @@ class uint256_t{
         template <typename T, typename = typename std::enable_if <std::is_integral<T>::value, T>::type>
         uint256_t & operator=(const T & rhs){
             UPPER = uint128_0;
+
+            if (std::is_signed<T>::value) {
+                if (rhs < 0) {
+                    UPPER = uint128_t(-1, -1);
+                }
+            }
+
             LOWER = rhs;
             return *this;
         }
