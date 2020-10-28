@@ -25,11 +25,12 @@ void uint128_t::init(const char *s) {
 uint64_t uint128_t::ConvertToUint64(const char *s) const {
     int count = 0;
     uint64_t val = 0;
-    uint8_t hv = HexToInt(s++);
-    while (hv != 0xFF && count < 16) {
+    while (count < 16) {
+        uint8_t hv = HexToInt(&s[count++]);
+        if (hv == 0xFF)
+            break;
+
         val = (val << 4) | hv;
-        hv = HexToInt(&s[count]);
-        count++;
     }
     return val;
 }
