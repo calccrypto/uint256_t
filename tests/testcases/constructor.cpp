@@ -12,6 +12,14 @@ TEST(Constructor, standard){
     EXPECT_EQ(value, 0x0123456789abcdefULL);
 }
 
+TEST(Constructor, string){
+    EXPECT_EQ(uint256_t("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"), uint256_max);
+    EXPECT_EQ(uint256_t("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"), uint256_max);
+    EXPECT_EQ(uint256_t("0"), 0);
+    EXPECT_EQ(uint256_t("0"), 0);
+    EXPECT_EQ(uint256_t("0x0123456789abcdef"), 0x0123456789abcdefULL);
+}
+
 TEST(Constructor, one){
     EXPECT_EQ(uint256_t(true).upper(),  false);
     EXPECT_EQ(uint256_t(true).lower(),   true);
