@@ -17,6 +17,14 @@ uint256_t::uint256_t(const char * s) {
     init(s);
 }
 
+uint256_t::uint256_t(uint8_t base, const std::string & s) {
+    init_from_base(base, s.c_str());
+}
+
+uint256_t::uint256_t(uint8_t base, const char * s) {
+    init_from_base(base, s);
+}
+
 void uint256_t::init(const char * s) {
     //create from string
     char buffer[64];
@@ -37,6 +45,25 @@ void uint256_t::init(const char * s) {
 
     UPPER = uint128_t(buffer);
     LOWER = uint128_t(buffer + 32);
+}
+
+void uint256_t::init_from_base(uint8_t base, const char * s) {
+    *this = 0;
+
+    uint256_t power(1);
+    uint8_t digit;
+    int pos = strlen(s) - 1;
+    while(pos >= 0) {
+        digit = 0;
+        if('0' <= s[pos] && s[pos] <= '9') {
+            digit = s[pos] - '0';
+        } else if('a' <= s[pos] && s[pos] <= 'z') {
+            digit = s[pos] - 'a' + 10;
+        }
+        *this += digit * power;
+        pos--;
+        power *= base;
+    }
 }
 
 uint256_t::operator bool() const{
