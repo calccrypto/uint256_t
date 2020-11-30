@@ -17,12 +17,12 @@ uint256_t::uint256_t(const char * s) {
     init(s);
 }
 
-uint256_t::uint256_t(uint8_t base, const std::string & s) {
-    init_from_base(base, s.c_str());
+uint256_t::uint256_t(const std::string & s, uint8_t base) {
+    init_from_base(s.c_str(), base);
 }
 
-uint256_t::uint256_t(uint8_t base, const char * s) {
-    init_from_base(base, s);
+uint256_t::uint256_t(const char * s, uint8_t base) {
+    init_from_base(s, base);
 }
 
 void uint256_t::init(const char * s) {
@@ -47,7 +47,7 @@ void uint256_t::init(const char * s) {
     LOWER = uint128_t(buffer + 32);
 }
 
-void uint256_t::init_from_base(uint8_t base, const char * s) {
+void uint256_t::init_from_base(const char * s, uint8_t base) {
     *this = 0;
 
     uint256_t power(1);
