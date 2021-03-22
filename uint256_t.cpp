@@ -25,6 +25,10 @@ uint256_t::uint256_t(const char * s, uint8_t base) {
     init_from_base(s, base);
 }
 
+uint256_t::uint256_t(const bool & b)
+    : uint256_t((uint8_t) b)
+{}
+
 void uint256_t::init(const char * s) {
     //create from string
     char buffer[64];
@@ -64,6 +68,12 @@ void uint256_t::init_from_base(const char * s, uint8_t base) {
         pos--;
         power *= base;
     }
+}
+
+uint256_t & uint256_t::operator=(const bool & rhs) {
+    UPPER = 0;
+    LOWER = rhs;
+    return *this;
 }
 
 uint256_t::operator bool() const{

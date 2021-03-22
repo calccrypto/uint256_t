@@ -64,6 +64,7 @@ class uint256_t{
         uint256_t(const char *val);
         uint256_t(const std::string & s, uint8_t base);
         uint256_t(const char *val, uint8_t base);
+        uint256_t(const bool & b);
 
         template <typename T, typename = typename std::enable_if<std::is_integral<T>::value, T>::type >
         uint256_t(const T & rhs)
@@ -143,6 +144,8 @@ class uint256_t{
             LOWER = rhs;
             return *this;
         }
+
+        uint256_t & operator=(const bool & rhs);
 
         // Typecast Operators
         operator bool      () const;

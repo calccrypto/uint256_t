@@ -11,6 +11,10 @@ uint128_t::uint128_t(const char *s) {
     init(s);
 }
 
+uint128_t::uint128_t(const bool & b)
+    : uint128_t((uint8_t) b)
+{}
+
 void uint128_t::init(const char *s) {
     if (s == NULL || s[0] == 0) { uint128_t(); return; }
     if (s[1] == 'x')
@@ -47,6 +51,12 @@ uint8_t uint128_t::HexToInt(const char *s) const {
         ret = uint8_t(*s - 'A' + 10);
     }
     return ret;
+}
+
+uint128_t & uint128_t::operator=(const bool & rhs) {
+    UPPER = 0;
+    LOWER = rhs;
+    return *this;
 }
 
 uint128_t::operator bool() const{
