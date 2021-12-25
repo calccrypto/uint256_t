@@ -1,6 +1,6 @@
 CXX?=g++
 STANDARD?=c++14
-CXXFLAGS=-std=$(STANDARD) -Wall -pedantic -g -I../../googletest/googletest/include -I..
+CXXFLAGS=-std=$(STANDARD) -Wall -pedantic -g -I../../googletest/googletest/include -I.. -I../uint128_t
 LDFLAGS=-L../../googletest/build/install/lib -lgtest -lpthread
 TARGET=test
 
@@ -36,23 +36,26 @@ all: $(TARGET)
 
 .PHONY: clean clean-all
 
-$(TESTCASES): %.o : %.cpp ../uint256_t.h ../uint128_t.h
+$(TESTCASES): %.o : %.cpp ../uint256_t.h ../uint128_t/uint128_t.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-../uint128_t.o: ../uint128_t.h ../uint128_t.cpp ../uint128_t.include
-	$(CXX) $(CXXFLAGS) -c ../uint128_t.cpp -o $@
+../uint128_t/uint128_t.o: ../uint128_t/uint128_t.h ../uint128_t/uint128_t.cpp ../uint128_t/uint128_t.include
+	$(CXX) $(CXXFLAGS) -c ../uint128_t/uint128_t.cpp -o $@
 
-../uint256_t.o: ../uint256_t.h ../uint256_t.cpp ../uint256_t.include ../uint128_t.o
+../uint256_t.o: ../uint256_t.h ../uint256_t.cpp ../uint256_t.include
 	$(CXX) $(CXXFLAGS) -c ../uint256_t.cpp -o $@
 
-$(TARGET): test.cpp ../uint256_t.o ../uint128_t.o $(TESTCASES)
+$(TARGET): test.cpp ../uint256_t.o ../uint128_t/uint128_t.o $(TESTCASES)
 	$(CXX) $(CXXFLAGS) $^ $(LDFLAGS) -o $(TARGET)
 
 run: $(TARGET)
 	./$(TARGET)
+	$(MAKE) -C ../uint128_t/tests run
 
 clean:
 	rm -f $(TARGET)
+	$(MAKE) -C ../uint128_t/tests clean
 
 clean-all:
-	rm -f ../uint256_t.o ../uint128_t.o $(TESTCASES)
+	rm -f ../uint256_t.o $(TESTCASES)
+	$(MAKE) -C ../uint128_t/tests clean-all

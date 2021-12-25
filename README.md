@@ -6,7 +6,7 @@ Copyright (c) 2013 - 2018 Jason Lee @ calccrypto at gmail.com
 
 Please see LICENSE file for license.
 
-[![Build Status](https://travis-ci.org/calccrypto/uint256_t.svg?branch=master)](https://travis-ci.org/calccrypto/uint256_t)
+[![Build Status](https://app.travis-ci.com/calccrypto/uint256_t.svg?branch=master)](https://app.travis-ci.com/calccrypto/uint256_t)
 
 ## Acknowledgements
 With much help from Auston Sterling
