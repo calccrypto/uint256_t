@@ -9,14 +9,6 @@ const uint256_t uint256_0(0);
 const uint256_t uint256_1(1);
 const uint256_t uint256_max(uint128_t((uint64_t) -1, (uint64_t) -1), uint128_t((uint64_t) -1, (uint64_t) -1));
 
-uint256_t::uint256_t(const std::string & s) {
-    init(s.c_str());
-}
-
-uint256_t::uint256_t(const char * s) {
-    init(s);
-}
-
 uint256_t::uint256_t(const std::string & s, uint8_t base) {
     init_from_base(s.c_str(), base);
 }
@@ -28,28 +20,6 @@ uint256_t::uint256_t(const char * s, uint8_t base) {
 uint256_t::uint256_t(const bool & b)
     : uint256_t((uint8_t) b)
 {}
-
-void uint256_t::init(const char * s) {
-    //create from string
-    char buffer[64];
-    if (s == NULL) { uint256_t(); return; }
-    if (s[1] == 'x')
-        s += 2;
-    else if (*s == 'x')
-        s++;
-
-    int len = strlen(s);
-    int padLength = 0;
-    if (len < 64) {
-        padLength = 64 - len;
-        memset(buffer, '0', padLength);
-    }
-
-    memcpy(buffer + padLength, s, len);
-
-    UPPER = uint128_t(buffer);
-    LOWER = uint128_t(buffer + 32);
-}
 
 void uint256_t::init_from_base(const char * s, uint8_t base) {
     *this = 0;
