@@ -15,6 +15,7 @@ jobs:
         standard: ["c++11", "c++14"]
 
     env:
+        GTEST_COLOR: 1
         STANDARD: "${{matrix.standard}}"
 
     steps:
