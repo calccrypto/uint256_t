@@ -156,32 +156,32 @@ class uint256_t
     }
 
     // Typecast Operators
-    constexpr operator bool() const
+    constexpr explicit operator bool() const
     {
         return static_cast<bool>(UPPER | LOWER);
     }
 
-    constexpr operator uint8_t() const
+    constexpr explicit operator uint8_t() const
     {
         return static_cast<uint8_t>(LOWER);
     }
 
-    constexpr operator uint16_t() const
+    constexpr explicit operator uint16_t() const
     {
         return static_cast<uint16_t>(LOWER);
     }
 
-    constexpr operator uint32_t() const
+    constexpr explicit operator uint32_t() const
     {
         return static_cast<uint32_t>(LOWER);
     }
 
-    constexpr operator uint64_t() const
+    constexpr explicit operator uint64_t() const
     {
         return static_cast<uint64_t>(LOWER);
     }
 
-    constexpr operator uint128_t() const
+    constexpr explicit operator uint128_t() const
     {
         return LOWER;
     }
@@ -767,7 +767,8 @@ class uint256_t
             {
                 digit = s[pos] - 'a' + 10;
             }
-            *this += digit * power;
+            // *this += digit * power;
+            *this += power * digit;
             pos--;
             power *= base;
         }
