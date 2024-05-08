@@ -39,7 +39,7 @@ to do a general rewrite of this class.
 #include <type_traits>
 #include <utility>
 
-#include "uint128_t/uint128_t.hpp"
+#include "uint128_t.hpp"
 
 class uint256_t
 {
