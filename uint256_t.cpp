@@ -423,7 +423,7 @@ uint256_t uint256_t::operator%(const uint128_t & rhs) const{
 }
 
 uint256_t uint256_t::operator%(const uint256_t & rhs) const{
-    return *this - (rhs * (*this / rhs));
+    return divmod(*this, rhs).second;
 }
 
 uint256_t & uint256_t::operator%=(const uint128_t & rhs){
